@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GildedRose.Domain;
 using GildedRose.Domain.Models;
 using GildedRose.Logic;
 using Shouldly;
@@ -24,12 +25,12 @@ namespace GildedRose.Tests
             return new List<Item>
             {
                 new Item {Name = "+5 Dexterity Vest", SellIn = 10, Quality = 20},
-                new Item {Name = "Aged Brie", SellIn = 2, Quality = 0},
+                new Item {Name = Constants.ProductNames.AgedBrie, SellIn = 2, Quality = 0},
                 new Item {Name = "Elixir of the Mongoose", SellIn = 5, Quality = 7},
-                new Item {Name = "Sulfuras, Hand of Ragnaros", SellIn = 0, Quality = 80},
+                new Item {Name = Constants.ProductNames.Sulfaras, SellIn = 0, Quality = 80},
                 new Item
                 {
-                    Name = "Backstage passes to a TAFKAL80ETC concert",
+                    Name = Constants.ProductNames.BackStagePass,
                     SellIn = 15,
                     Quality = 20
                 },
@@ -45,8 +46,7 @@ namespace GildedRose.Tests
             var itemNames = new List<string>
             {
                 "Dexterity Vest",
-                "Mongoose",
-                "Conjured Mana Cake"
+                "Mongoose"
             };
 
             foreach (var name in itemNames)
@@ -70,31 +70,36 @@ namespace GildedRose.Tests
         [Fact]
         public void VerifyBrieHasChanged()
         {
-            var items = _itemProcessor.GetItems();
-            const string itemName = "Aged Brie";
+            var items = new List<Item>
+            {
+                new Item
+                {
+                    Name = Constants.ProductNames.AgedBrie,
+                    Quality = 0,
+                    SellIn = 2
+                }
+            };
 
-            var item = items.FirstOrDefault(i => i.Name.Contains(itemName));
+            var initialQuality = items[0].Quality;
+            var initialSellIn = items[0].SellIn;
+            var itemProcessor = new ItemProcessor(items);
+
+            itemProcessor.UpdateQuality();
+
+            var updateItems = itemProcessor.GetItems();
+            var item = updateItems.FirstOrDefault(i => i.Name.Contains(Constants.ProductNames.AgedBrie));
+
             item.ShouldNotBe(null);
-
-            var initialQuality = item.Quality;
-            var initialSellIn = item.SellIn;
-
-            _itemProcessor.UpdateQuality();
-
-            var after = items.FirstOrDefault(i => i.Name.Contains(itemName));
-            after.ShouldNotBe(null);
-
-            after.Quality.ShouldBe(initialQuality + 1);
-            after.SellIn.ShouldBe(initialSellIn - 1);
+            item.Quality.ShouldBe(initialQuality + 1);
+            item.SellIn.ShouldBe(initialSellIn - 1);
         }
 
         [Fact]
         public void VerifyBackstagePassHasChanged()
         {
             var items = _itemProcessor.GetItems();
-            const string itemName = "Backstage passes";
 
-            var item = items.FirstOrDefault(i => i.Name.Contains(itemName));
+            var item = items.FirstOrDefault(i => i.Name.Contains(Constants.ProductNames.BackStagePass));
             item.ShouldNotBe(null);
 
             var initialQuality = item.Quality;
@@ -102,7 +107,7 @@ namespace GildedRose.Tests
 
             _itemProcessor.UpdateQuality();
 
-            var after = items.FirstOrDefault(i => i.Name.Contains(itemName));
+            var after = items.FirstOrDefault(i => i.Name.Contains(Constants.ProductNames.BackStagePass));
             after.ShouldNotBe(null);
 
             after.Quality.ShouldBe(initialQuality + 1);
@@ -113,9 +118,8 @@ namespace GildedRose.Tests
         public void SulfarasHasNotChanged()
         {
             var items = _itemProcessor.GetItems();
-            const string itemName = "Sulfuras";
 
-            var item = items.FirstOrDefault(i => i.Name.Contains(itemName));
+            var item = items.FirstOrDefault(i => i.Name.Contains(Constants.ProductNames.Sulfaras));
             item.ShouldNotBe(null);
 
             var initialQuality = item.Quality;
@@ -123,7 +127,7 @@ namespace GildedRose.Tests
 
             _itemProcessor.UpdateQuality();
 
-            var after = items.FirstOrDefault(i => i.Name.Contains(itemName));
+            var after = items.FirstOrDefault(i => i.Name.Contains(Constants.ProductNames.Sulfaras));
             after.ShouldNotBe(null);
 
             after.Quality.ShouldBe(initialQuality);
@@ -201,7 +205,7 @@ namespace GildedRose.Tests
             updateItems[0].Quality.ShouldBe(initialQuality);
         }
 
-        [Fact(Skip = "This is failing so need to update the logic of the UpdateQuality method")]
+        [Fact]
         public void ItemQualityMaxIs50()
         {
             //The Quality of an item is never more than 50
@@ -294,6 +298,24 @@ namespace GildedRose.Tests
             var updateItems = itemProcessor.GetItems();
 
             updateItems[0].Quality.ShouldBe(0);
+        }
+
+        [Fact]
+        public void ConjuredItemsDegradeTwiceAsFast()
+        {
+            var items = new List<Item>
+            {
+                new Item {Name = "Conjured Mana Cake", SellIn = 3, Quality = 6}
+            };
+
+            var itemProcessor = new ItemProcessor(items);
+            var initialQuality = items[0].Quality;
+
+            itemProcessor.UpdateQuality();
+
+            var updateItems = itemProcessor.GetItems();
+
+            updateItems[0].Quality.ShouldBe(initialQuality - 2);
         }
     }
 }
