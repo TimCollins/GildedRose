@@ -96,5 +96,10 @@ namespace GildedRose.Logic
                 Console.WriteLine("Item: {0}\nQuality: {1}\nSellIn: {2}", item.Name, item.Quality, item.SellIn);
             }
         }
+
+        public List<Item> GetItems()
+        {
+            return _items;
+        }
     }
 }

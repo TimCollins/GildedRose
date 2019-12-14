@@ -50,12 +50,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GildedRose.Domain\GildedRose.Domain.csproj">
+    <ProjectReference Include="..\GildedRose.Domain\GildedRose.Domain.csproj">
       <Project>{169b5efc-4a67-47c1-8ab9-d8da3671e5db}</Project>
       <Name>GildedRose.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\GildedRose.Logic\GildedRose.Logic.csproj">
-      <Project>{C57BC309-3CDA-47BD-A740-255D34A520D6}</Project>
+    <ProjectReference Include="..\GildedRose.Logic\GildedRose.Logic.csproj">
+      <Project>{c57bc309-3cda-47bd-a740-255d34a520d6}</Project>
       <Name>GildedRose.Logic</Name>
     </ProjectReference>
   </ItemGroup>

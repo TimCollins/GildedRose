@@ -26,9 +26,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{B8B88B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GildedRose.Console", "src\GildedRose.Console\GildedRose.Console.csproj", "{F2E879A9-7F1C-4C34-AB0D-2662F9815046}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GildedRose.Domain", "GildedRose.Domain\GildedRose.Domain.csproj", "{169B5EFC-4A67-47C1-8AB9-D8DA3671E5DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GildedRose.Domain", "src\GildedRose.Domain\GildedRose.Domain.csproj", "{169B5EFC-4A67-47C1-8AB9-D8DA3671E5DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GildedRose.Logic", "GildedRose.Logic\GildedRose.Logic.csproj", "{C57BC309-3CDA-47BD-A740-255D34A520D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GildedRose.Logic", "src\GildedRose.Logic\GildedRose.Logic.csproj", "{C57BC309-3CDA-47BD-A740-255D34A520D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
